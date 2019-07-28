@@ -1,0 +1,4 @@
+
+alias more=less
+alias ls-al="ls -al"
+alias h='cd ~'

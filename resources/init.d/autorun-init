@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# This script allows to run every service installed via WSLDP
+# Start it via sudo /etc/init.d/autorun start
+# Stop it via sudo /etc/init.d/autorun stop
+# It start/stop all of them
+
+WSLDP_GLOBAL_CONFIG_DIR=
+
+source $WSLDP_GLOBAL_CONFIG_DIR/defaults
+
+if [ -f "$WSLDP_GLOBAL_CONFIG_DIR/autorun" ]; then
+    case "$1" in
+        start)
+            while read p; do
+                SERVICE=$(echo "$p" | tr '[:upper:]' '[:lower:]')
+                case "$SERVICE" in
+                    phpfpm)
+                        /etc/init.d/php$DEFAULT_PHP_VERSION-fpm start
+                    ;;
+                    rabbitmq)
+                        echo "Rabbitmq start delayed. Start it manually via /etc/init.d/rabbitmq start"
+                    ;;
+                    *)
+                        if [ "$SERVICE" != "" ]; then
+                            /etc/init.d/$SERVICE start
+                        fi
+                    ;;
+                esac
+            done < $WSLDP_GLOBAL_CONFIG_DIR/autorun
+        ;;
+        stop)
+            while read p; do
+                SERVICE=$(echo "$p" | tr '[:upper:]' '[:lower:]')
+                case "$SERVICE" in
+                    phpfpm)
+                        /etc/init.d/php$DEFAULT_PHP_VERSION-fpm stop
+                    ;;
+                    rabbitmq)
+                        echo "Rabbitmq stop delayed. Stop it manually via /etc/init.d/rabbitmq stop"
+                    ;;
+                    *)
+                        if [ "$SERVICE" != "" ]; then
+                            /etc/init.d/$SERVICE stop
+                        fi
+                    ;;
+                esac
+            done < $WSLDP_GLOBAL_CONFIG_DIR/autorun
+        ;;
+        status)
+            echo "Available WSLDP services"
+            while read p; do
+                echo $p
+            done < $WSLDP_GLOBAL_CONFIG_DIR/autorun
+        ;;
+        list)
+            echo "Available WSLDP services"
+            while read p; do
+                echo $p
+            done < $WSLDP_GLOBAL_CONFIG_DIR/autorun
+        ;;
+    esac
+fi

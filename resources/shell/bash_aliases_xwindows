@@ -1,0 +1,5 @@
+
+#
+# XWindows related
+
+alias term='DISPLAY=:0 terminator &'

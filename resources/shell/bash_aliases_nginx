@@ -1,0 +1,25 @@
+
+#
+# NGINX related
+
+alias create-site-nginx='__create_site_nginx'
+
+#
+function __create_site_nginx () {
+    if [[ "$1" && "$2" && "$3" && "$4" && "$5" ]]
+    then
+        sudo bash wsldp-create-certificate.sh "$1"
+        sudo bash wsldp-create-site-nginx.sh "$1" "$2" "$3" "$4" "$5" "$6" "$7"
+    else
+        echo "Error: missing required parameters."
+        echo "Usage: "
+        echo "  create-site-nginx server_name root_dir http_port ssl_port php_fpm_version add_host_host_file params"
+        echo "    server_name - address of the site"
+        echo "    root_dir - root dir"
+        echo "    http_port - port"
+        echo "    ssl_port - SSL port (0 - disable)"
+        echo "    php_fpm_version - PHP-FPM version"
+        echo "    add_to_hosts_file - should the host be added to system hosts file (true|false). Default false."
+        echo "    params"
+    fi
+}

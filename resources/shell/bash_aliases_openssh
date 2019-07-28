@@ -1,0 +1,7 @@
+
+#
+# OpenSSH server related
+
+function ssh-restart(){
+    sudo service ssh --full-restart
+}

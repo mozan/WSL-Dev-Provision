@@ -1,0 +1,71 @@
+
+#
+# PHP related
+alias php-cli-xdebug-disable='sudo phpdismod -s cli xdebug'
+alias php-cli-xdebug-enable='sudo phpenmod -s cli xdebug'
+alias php-cli-xdebug-swap='xphp'
+alias php-change-version='php_change_version'
+alias xon='php-cli-xdebug-enable'
+alias xoff='php-cli-xdebug-disable'
+
+function xphp() {
+    (php -m | grep -q xdebug)
+    if [[ $? -eq 0 ]]
+    then
+        XDEBUG_ENABLED=true
+    else
+        XDEBUG_ENABLED=false
+    fi
+
+    if ! $XDEBUG_ENABLED; then php-cli-xdebug-enable; fi
+    sudo php \
+        -dxdebug.remote_host=_LOCAL_IP_ADDRESS_ \
+        -dxdebug.remote_autostart=1 \
+        "$@"
+
+    if ! $XDEBUG_ENABLED; then php-cli-xdebug-disable; fi
+}
+
+function php-56() {
+    php_change_version 5.6
+}
+
+function php-70() {
+    php_change_version 7.0
+}
+
+function php-71() {
+    php_change_version 7.1
+}
+
+function php-72() {
+    php_change_version 7.2
+}
+
+function php-73() {
+    php_change_version 7.3
+}
+
+function php_change_version() {
+    WSLDP_GLOBAL_CONFIG_DIR=
+    PHP_VERSIONS=$(ls $WSLDP_GLOBAL_CONFIG_DIR/installed/php* |grep php'[[:digit:]]' |grep -v fpm | sed "s/.*php//" | sed ':a;N;$!ba;s/\n/ /g')
+
+    if [ "$#" -ne 1 ]; then
+        echo "Error: missing required parameters."
+        echo "Usage: "
+        echo "  php-change-version version"
+        echo "    version - available: "$PHP_VERSIONS
+        echo "It doesn't change apache/nginx php-fpm versions. Just CLI."
+    else
+        if [ -f /usr/bin/php$1 ]; then
+            sudo update-alternatives --set php /usr/bin/php$1
+            sudo update-alternatives --set phar /usr/bin/phar$1
+            sudo update-alternatives --set phar.phar /usr/bin/phar.phar$1
+            sudo update-alternatives --set phpize /usr/bin/phpize$1
+            sudo update-alternatives --set php-config /usr/bin/php-config$1
+        else
+            echo "$1 PHP not available."
+            return -1
+        fi
+    fi
+}

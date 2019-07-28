@@ -1,0 +1,5 @@
+#!/bin/bash
+
+WSLDP_GLOBAL_CONFIG_DIR=
+
+ls $WSLDP_GLOBAL_CONFIG_DIR/installed

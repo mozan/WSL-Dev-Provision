@@ -1,0 +1,50 @@
+#!/bin/bash
+
+DAEMON=/usr/bin/mysqld_safe
+#OPTS=--defaults-file=/usr/local/etc/mysql/my.cnf
+NAME=mysql
+DESC=mysql
+
+test -x $DAEMON || exit 0
+set -e
+
+start()
+{
+    $DAEMON $OPTS > /var/log/mysql/output.log 2>&1 &
+    return
+}
+ 
+stop()
+{
+    kill `cat /var/run/mysqld/mysqld.pid`
+    return
+}
+
+case "$1" in
+    start)
+        echo -n "Starting $DESC: "
+        start
+        echo "started."
+        ;;
+
+    stop)
+        echo -n "Stopping $DESC: "
+        stop
+        echo "stopped."
+        ;;
+
+    restart|force-reload)
+        echo -n "Restarting $DESC: "
+        stop
+        sleep 1
+        start
+        echo "restarted."
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

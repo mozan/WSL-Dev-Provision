@@ -1,0 +1,6 @@
+WSL-Dev-Provision.code-workspace
+.vscode
+params.sh
+*.o
+*.so
+zz
