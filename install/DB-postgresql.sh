@@ -9,6 +9,7 @@
 
 #
 # Postgres
+VERSION=11
 if [ "$INSTALL_DB_SERVERS" == "y" ] && [ "$INSTALL_SERVICE_POSTGRESQL" == "y" ]; then
 	echoBanner "DB - PostgreSQL"
 
@@ -17,13 +18,13 @@ if [ "$INSTALL_DB_SERVERS" == "y" ] && [ "$INSTALL_SERVICE_POSTGRESQL" == "y" ];
 	else
 		checkIfInstalled "db-postgresql" "DB - PostgreSQL"
 		if [ "$?" == "0" ]; then
-			apt-get $APT_SILENCE install -y postgresql-10
+			apt-get $APT_SILENCE install -y postgresql-$VERSION
 
 			# remote Access
-			sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/10/main/postgresql.conf
+			sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$VERSION/main/postgresql.conf
 			# workaround for https://github.com/Microsoft/WSL/issues/3863
-			echo "data_sync_retry = true" >> /etc/postgresql/10/main/postgresql.conf
-			echo "host    all             all             $LOCAL_NET/$LOCAL_NET_MASK               md5" | tee -a /etc/postgresql/10/main/pg_hba.conf
+			echo "data_sync_retry = true" >> /etc/postgresql/$VERSION/main/postgresql.conf
+			echo "host    all             all             $LOCAL_NET/$LOCAL_NET_MASK               md5" | tee -a /etc/postgresql/$VERSION/main/pg_hba.conf
 
 			service postgresql start
 
