@@ -9,7 +9,6 @@
 
 #
 # Postgres
-VERSION=11
 if [ "$INSTALL_DB_SERVERS" == "y" ] && [ "$INSTALL_SERVICE_POSTGRESQL" == "y" ]; then
 	echoBanner "DB - PostgreSQL"
 
@@ -18,7 +17,7 @@ if [ "$INSTALL_DB_SERVERS" == "y" ] && [ "$INSTALL_SERVICE_POSTGRESQL" == "y" ];
 	else
 		checkIfInstalled "db-postgresql" "DB - PostgreSQL"
 		if [ "$?" == "0" ]; then
-			apt-get $APT_SILENCE install -y postgresql-$VERSION
+			apt-get $APT_SILENCE install -y postgresql
 
 			# remote Access
 			sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$VERSION/main/postgresql.conf

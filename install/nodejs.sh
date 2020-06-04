@@ -11,9 +11,6 @@ if [ "$INSTALL_NODEJS" == "y" ]; then
 
 		mkdir /usr/lib/node_modules/.staging
 
-		echoBanner "NODEJS - gulp-cli"
-		/usr/bin/npm install -g gulp-cli
-
 		echoBanner "NODEJS - bower"
 		/usr/bin/npm install -g bower
 

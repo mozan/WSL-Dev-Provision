@@ -7,7 +7,7 @@ export INSTANCE_NAME=ubuntu18_04
 #
 # Are we running on WSL, WSL2 or native? (wsl, wsl2, native)
 # TODO - determine on what kind of system are we running
-export RUNNING_ON=wsl
+export RUNNING_ON=native
 if [ "$RUNNING_ON" == "wsl" ]; then
 	# use LD_PRELOAD for:
 	# getsockopt() - TCP_INFO
@@ -41,7 +41,6 @@ export WSL_INSTALL_AS_GLOBAL=y
 #
 # WSL-Dev-Provision global directories (if used)
 if [ "$WSL_INSTALL_AS_GLOBAL" == "y" ]; then
-	# If empty, current user will be used (ruby, python, etc)
 #	export INSTALLED_FOR_USER=vagrant
 	# WSL-Dev-Provision global config dir
 	export WSLDP_GLOBAL_CONFIG_DIR=/etc/wsldp
@@ -152,20 +151,13 @@ fi
 
 # GO lang
 export INSTALL_GOLANG=n
-if [ "$INSTALL_GOLANG" == "y" ]; then
-	export GO_LANG_VERSION=1.12.5
-fi
 
 # Java JRE/JDK
 export INSTALL_JRE=y
 export INSTALL_JDK=n
 
-# .NET
-export INSTALL_DOTNET_CORE_SDK=n
-export INSTALL_DOTNET_CORE_RUNTIME=y
-if [ "$INSTALL_DOTNET_CORE_SDK" == "y" ] || [ "$INSTALL_DOTNET_CORE_RUNTIME" == "y" ]; then
-	export PPA_MICROSOFT=y
-fi
+# Microsoft related
+export PPA_MICROSOFT=y
 
 # NODEJS
 export INSTALL_NODEJS=y
@@ -176,11 +168,12 @@ if [ "$INSTALL_PHP" == "y" ]; then
 	export INSTALL_PHP_56=y
 	export INSTALL_PHP_70=n
 	export INSTALL_PHP_71=n
-	export INSTALL_PHP_72=y
+	export INSTALL_PHP_72=n
 	export INSTALL_PHP_73=y
+	export INSTALL_PHP_74=y
 	export INSTALL_SERVICE_PHPFPM=y
 
-	export DEFAULT_PHP_VERSION=7.3
+	export DEFAULT_PHP_VERSION=7.4
 
 	DPV="${DEFAULT_PHP_VERSION//.}"
 

@@ -7,9 +7,10 @@ if [ "$PPA_GOOGLE" == "y" ]; then
 	echo "- Google packages..."
 	checkIfInstalled "ppa-google" "Google packages"
 	if [ "$?" == "0" ]; then
-		export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-		echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list
-		curl -sL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+		# Add the Cloud SDK distribution URI as a package source
+		echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+		# Import the Google Cloud Platform public key
+		curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 		setAsInstalled "ppa-google"
 	fi
 fi
@@ -48,15 +49,19 @@ if [ "$INSTALL_DB_SERVERS" == "y" ]; then
 			setAsInstalled "ppa-db-mongod"
 		fi
 	fi
+
 	if [ "$INSTALL_SERVICE_NEO4J" == "y" ]; then
 		echo "- Neo4j packages..."
 		checkIfInstalled "ppa-db-neo4j" "Neo4j packages"
 		if [ "$?" == "0" ]; then
-			wget -qO - https://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
-			echo 'deb https://debian.neo4j.org/repo stable/' >> /etc/apt/sources.list.d/neo4j.list
+			wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
+			echo 'deb https://debian.neo4j.com stable latest' | sudo tee /etc/apt/sources.list.d/neo4j.list
+			# wget -qO - https://debian.neo4j.org/neotechnology.gpg.key | apt-key add -
+			# echo 'deb https://debian.neo4j.org/repo stable/' >> /etc/apt/sources.list.d/neo4j.list
 			setAsInstalled "ppa-db-neo4j"
 		fi
 	fi
+
 	if [ "$INSTALL_SERVICE_RABBITMQ" == "y" ]; then
 		echo "- RabbitMQ packages..."
 		checkIfInstalled "ppa-db-rabbitmq" "RabbitMQ packages"
@@ -67,14 +72,14 @@ if [ "$INSTALL_DB_SERVERS" == "y" ]; then
 	fi
 fi
 
-if [ "$INSTALL_SERVICE_NGINX" == "y" ]; then
-	echo "- NGINX packages..."
-	checkIfInstalled "ppa-www-nginx" "NGINX packages"
-	if [ "$?" == "0" ]; then
-		apt-add-repository ppa:nginx/development -y > /dev/null 2>&1
-		setAsInstalled "ppa-www-nginx"
-	fi
-fi
+# if [ "$INSTALL_SERVICE_NGINX" == "y" ]; then
+# 	echo "- NGINX packages..."
+# 	checkIfInstalled "ppa-www-nginx" "NGINX packages"
+# 	if [ "$?" == "0" ]; then
+# 		apt-add-repository ppa:nginx/development -y > /dev/null 2>&1
+# 		setAsInstalled "ppa-www-nginx"
+# 	fi
+# fi
 
 if [ "$INSTALL_NODEJS" == "y" ]; then
 	echo "- NODEJS packages..."
