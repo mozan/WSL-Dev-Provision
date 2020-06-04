@@ -2,10 +2,11 @@
 
 #
 # Symfony symfony command
-if [ "$INSTALL_PHP" == "y" ] && [ "$INSTALL_PHP_MISC_DEVEL" == "y" ] && [ "$INSTALL_SYMFONY_COMMAND" == "y" ]; then
+if [ "$INSTALL_PHP" == "y" ] && [ "$INSTALL_SYMFONY_COMMAND" == "y" ]; then
 	echoBanner "PHP symfony command"
 	checkIfInstalled "php-symfony" "PHP symfony command"
 	if [ "$?" == "0" ]; then
+		apt-get $APT_SILENCE install -y libnss3-tools
 		curl -sL https://get.symfony.com/cli/installer | bash -
 		if test -f $HOME/.symfony/bin/symfony; then
 			mv $HOME/.symfony/bin/symfony $WSLDP_GLOBAL_BIN_DIR/symfony

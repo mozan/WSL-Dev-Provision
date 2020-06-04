@@ -82,6 +82,10 @@ if [ "$INSTALL_NODEJS" == "y" ]; then
 	if [ "$?" == "0" ]; then
 		curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 		echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+
+		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+		echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
 		setAsInstalled "ppa-nodejs"
 	fi
 fi

@@ -204,7 +204,9 @@ if [ "$INSTALL_PHP" == "y" ]; then
 		if [ "$INSTALL_PHP_73" == "y" ] && [ "$DPV" == "73" ]; then
 			PHP_VERSION_EXPECTED=true
 		fi
-
+		if [ "$INSTALL_PHP_74" == "y" ] && [ "$DPV" == "74" ]; then
+			PHP_VERSION_EXPECTED=true
+		fi
 		if [ $PHP_VERSION_EXPECTED != "true" ]; then
 			echo "Default PHP version is not on the install list ($DEFAULT_PHP_VERSION). Checkout params.sh file (DEFAULT_PHP_VERSION)"
 			exit

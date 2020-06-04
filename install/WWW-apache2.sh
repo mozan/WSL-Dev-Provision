@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO add
+# Protocols h2 h2c http/1.1 to apache.conf
+
 #
 # Apache
 if [ "$INSTALL_WWW_SERVERS" == "y" ] && [ "$INSTALL_SERVICE_APACHE2" == "y" ]; then
